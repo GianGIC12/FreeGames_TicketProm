@@ -225,7 +225,8 @@ public class QueryApuestas {
         objCon.conectar();
 
         sql = "select  b.id as id_apuesta, b.iduser as id_user,b.amount as monto_jugada, "
-                + " b.created_at as fecha_jugada, u.name as nombre, u.lastname as apellido, u.email as email, u.phone as telefono "
+                + " b.created_at as fecha_jugada, u.name as nombre, u.lastname as apellido, u.email as email, u.phone as telefono, "
+                + " b.type as tipo "
                 + "  from db_apuestatotal_prod.user_bet as b "
                 + " join db_apuestatotal_prod.user_user as u"
                 + " on b.idUser=u.id "
@@ -241,6 +242,7 @@ public class QueryApuestas {
         String apellido = "No Definido";
         String correo = "No Definido";
         String telefono = "No Definido";
+        int tipo=0;
 
         while (rs.next()) {
 
@@ -269,6 +271,8 @@ public class QueryApuestas {
             if (rs.getString(8) != null) {
                 telefono = rs.getString(8);
             }
+            
+            tipo=rs.getInt(9);
 
             jugador.setIdApuesta(id_apuesta);
             jugador.setIdUser(id_user);
@@ -278,6 +282,7 @@ public class QueryApuestas {
             jugador.setApellido(apellido);
             jugador.setCorreo(correo);
             jugador.setTelefono(telefono);
+            jugador.setTipo(tipo);
 
             jugadores.add(jugador);
 
@@ -302,6 +307,7 @@ public class QueryApuestas {
             +" apellidoJugador: "+jugador.getApellido()
             +" emailJugador: "+jugador.getCorreo()
             +" telefonoJugador: "+jugador.getTelefono()
+            + " tipoApuesta: " + jugador.getTipo()
             );
             
         }

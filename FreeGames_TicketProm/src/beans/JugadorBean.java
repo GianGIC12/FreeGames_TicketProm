@@ -14,7 +14,7 @@ public class JugadorBean {
     
     int idApuesta,idUser;
     float monto_jugada;
-    int type;
+    int tipo;
     String fecha_jugada,nombre,apellido,correo;
     String telefono;
 
@@ -45,13 +45,18 @@ public class JugadorBean {
         this.monto_jugada = monto_jugada;
     }
 
-    public int getType() {
-        return type;
+    public int getTipo() {
+        return tipo;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
     }
+
+  
+    
+    
+    
 
     public String getFecha_jugada() {
         return fecha_jugada;
