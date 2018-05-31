@@ -194,8 +194,8 @@ public class QueryApuestas {
         }
 
     }
-    
-     public void listarfechas1() {
+
+    public void listarfechas1() {
 
         for (int i = 0; i < fechas1.length; i++) {
 
@@ -212,55 +212,137 @@ public class QueryApuestas {
         }
 
     }
-    
-    
-    public void insertarJugadores(int diaNum) throws SQLException{
-        
+
+    public void insertarJugadores(int diaNum) throws SQLException {
+
         String fecha = "";
 
         fecha = fechas1[diaNum - 1];
 
         System.out.println("" + fecha);
-        
-        
+
         Conexion objCon = new Conexion();
         objCon.conectar();
-        
-        sql="select  b.id as id_apuesta, b.iduser as id_user,b.amount as monto_jugada, "
-           +" b.created_at as fecha_jugada, u.name as nombre, u.lastname as apellido, u.email as email, u.phone as telefono "     
-           + "  from db_apuestatotal_prod.user_bet as b "
-           + " join db_apuestatotal_prod.user_user as u" 
-           + " on b.idUser=u.id " 
-           + " where SUBSTRING(b.created_at,1,10)='2018-05-16' and b.amount is not null";
-        
+
+        sql = "select  b.id as id_apuesta, b.iduser as id_user,b.amount as monto_jugada, "
+                + " b.created_at as fecha_jugada, u.name as nombre, u.lastname as apellido, u.email as email, u.phone as telefono "
+                + "  from db_apuestatotal_prod.user_bet as b "
+                + " join db_apuestatotal_prod.user_user as u"
+                + " on b.idUser=u.id "
+                + " where SUBSTRING(b.created_at,1,10)= " + "'"+fecha +"'"  + " and b.amount is not null";
+
         PreparedStatement stm = objCon.getCon().prepareStatement(sql);
         ResultSet rs = stm.executeQuery();
         int i = 0;
-        int id_apuesta=0;
-        int id_user=0;
-        float monto_jugada=0.0f;
-        String nombre="";
-        String apellido="";
-        
-        
-         while (rs.next()) {
-             
-             i++;
-             
-             
-             System.out.println(i+" ");    
-             
-         }
-         
-         
-        
+        int id_apuesta = 0;
+        int id_user = 0;
+        float monto_jugada = 0.0f;
+        String nombre = "No Definido";
+        String apellido = "No Definido";
+        String correo = "No Definido";
+        String telefono = "No Definido";
+
+        while (rs.next()) {
+
+            i++;
+
+            JugadorBean jugador = new JugadorBean();
+
+            id_apuesta = rs.getInt(1);
+            id_user = rs.getInt(2);
+            monto_jugada = rs.getFloat(3);
+
+            if (rs.getString(5) != null) {
+                nombre = rs.getString(5);
+            }
+
+            if (rs.getString(6) != null) {
+
+                apellido = rs.getString(6);
+
+            }
+
+            if (rs.getString(7) != null) {
+                correo = rs.getString(7);
+            }
+
+            if (rs.getString(8) != null) {
+                telefono = rs.getString(8);
+            }
+
+            jugador.setIdApuesta(id_apuesta);
+            jugador.setIdUser(id_user);
+            jugador.setMonto_jugada(monto_jugada);
+            jugador.setFecha_jugada(fecha);
+            jugador.setNombre(nombre);
+            jugador.setApellido(apellido);
+            jugador.setCorreo(correo);
+            jugador.setTelefono(telefono);
+
+            jugadores.add(jugador);
+
+            System.out.println(i + " Extraccion ");
+
+        }
+
         objCon.desconectar();
+
+    }
+
+    public void listarJugadas(){
+        
+        int k=0;
+        for (JugadorBean jugador: jugadores) {
+            k++;
+            System.out.println(k+": "+ "Id_Puesta: " + jugador.getIdApuesta()
+            +" Id_user: "+ jugador.getIdUser()
+            +" monto_jugada: "+jugador.getMonto_jugada()
+            +" fecha_jugada: "+jugador.getFecha_jugada()
+            +" nombreJugador: "+jugador.getNombre()
+            +" apellidoJugador: "+jugador.getApellido()
+            +" emailJugador: "+jugador.getCorreo()
+            +" telefonoJugador: "+jugador.getTelefono()
+            );
+            
+        }
+        
         
         
         
         
     }
-    
-    
 
+    public List<JugadorBean> getJugadores() {
+        return jugadores;
+    }
+
+    public void setJugadores(List<JugadorBean> jugadores) {
+        this.jugadores = jugadores;
+    }
+
+    public String getSql() {
+        return sql;
+    }
+
+    public void setSql(String sql) {
+        this.sql = sql;
+    }
+
+    public String[] getFechas1() {
+        return fechas1;
+    }
+
+    public void setFechas1(String[] fechas1) {
+        this.fechas1 = fechas1;
+    }
+
+    public String[] getFechas2() {
+        return fechas2;
+    }
+
+    public void setFechas2(String[] fechas2) {
+        this.fechas2 = fechas2;
+    }
+    
+    
 }

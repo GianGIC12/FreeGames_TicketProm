@@ -8,6 +8,7 @@ package pruebas;
 
 import gestion.QueryApuestas;
 import java.sql.SQLException;
+import java.util.Calendar;
 
 /**
  *
@@ -21,6 +22,16 @@ public class Ticket_Promedio {
     public static void main(String[] args) throws SQLException {
         // TODO code application logic here
         
+        Calendar calendar = Calendar.getInstance();
+
+        int num_dia = calendar.get(Calendar.DAY_OF_YEAR);
+
+        
+        System.out.println("" + num_dia);
+
+        System.out.println("estamos en el día: " + num_dia);
+        
+        
         QueryApuestas q= new QueryApuestas();
         
         q.llenarFechas1();
@@ -30,7 +41,10 @@ public class Ticket_Promedio {
         q.listarfechas2();
         
         
-        q.insertarJugadores(1);
+        q.insertarJugadores(num_dia);
+        
+        q.listarJugadas();
+        
         
         
     }
